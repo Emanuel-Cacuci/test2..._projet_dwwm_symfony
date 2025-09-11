@@ -2,18 +2,22 @@
 
 namespace App\Controller;
 
+use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+// use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ProduitController extends AbstractController
 {
-     #[Route('/produit  ', name: 'produit.index')]
-    public function index(Request $request): Response
+     #[Route('/produit', name: 'produit.index')]
+    public function index(Request $request, ProduitRepository $produitRepository): Response
     {   
-        return new Response('Produit');
+       $produits = $produitRepository->findAll();
+       dd($produits);
+        // return new Response('Produit');
+        return $this->render('produit/index.html.twig');
     }
 
     #[Route('/produit/{slug}-{id}', name: 'produit.show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
