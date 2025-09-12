@@ -2,26 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
+use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategorieRepository::class)]
-class Categorie
+#[ORM\Entity(repositoryClass: AuteurRepository::class)]
+class Auteur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 100)]
     private ?string $nom = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $prenom = null;
 
     /**
      * @var Collection<int, Produit>
      */
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'auteur')]
     private Collection $produits;
 
     public function __construct()
@@ -46,6 +49,18 @@ class Categorie
         return $this;
     }
 
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Produit>
      */
@@ -58,7 +73,7 @@ class Categorie
     {
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
-            $produit->setCategorie($this);
+            $produit->setAuteur($this);
         }
 
         return $this;
@@ -68,9 +83,9 @@ class Categorie
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getCategorie() === $this) {
-                $produit->setCategorie(null);
-            } 
+            if ($produit->getAuteur() === $this) {
+                $produit->setAuteur(null);
+            }
         }
 
         return $this;
