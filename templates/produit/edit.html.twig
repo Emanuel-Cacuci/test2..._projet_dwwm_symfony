@@ -6,8 +6,19 @@
 
 <h1>{{ produit.nom ~ ' :' ~ ' ' ~ produit.prix }} €</h1>
 
-<p>
+{{ form(form) }}
+
+{# <p>
 {{ produit.description | nl2br }}
-</p>
+</p> #}
+{# 
+{{ form_start(form) }}
+<div class="d-flex">
+    {{ form_row(form.nom) }}
+    {{ form_row(form.stock) }}
+</div>
+{{ form_rest(form) }}
+
+{{ form_end(form) }} #}
 
 {% endblock %}

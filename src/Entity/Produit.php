@@ -28,6 +28,10 @@ class Produit
     #[ORM\Column]
     private ?int $stock = null;
 
+    // #[ORM\Column(length: 100, unique:true)]
+    // @Gedmo\Slug(fields={"name"})
+    // private ?string $slug;
+
     /**
      * @var Collection<int, LigneCommande>
      */
@@ -51,12 +55,20 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Auteur $auteur = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->ligneCommandes = new ArrayCollection();
         $this->lignePaniers = new ArrayCollection();
     }
 
+    // public function prepersist()
+    // {
+    //     $this->slug = (new Slugify())->slugify($this->nom);
+    // }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -202,6 +214,18 @@ class Produit
     public function setAuteur(?Auteur $auteur): static
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
