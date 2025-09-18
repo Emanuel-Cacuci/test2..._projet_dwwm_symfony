@@ -34,9 +34,10 @@ class ProduitType extends AbstractType
                 'class' => Auteur::class,
                 'choice_label' => 'prenom',
             ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Modifier'
-            ])
+        //     ->add('save', SubmitType::class, [
+        //         'label' => 'Modifier'
+        //     ])
+        //
         ;
     }
 

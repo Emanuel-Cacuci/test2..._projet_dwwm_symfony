@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 // use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NearMissValueResolverException;
+// use Symfony\Component\HttpKernel\Exception\NearMissValueResolverException;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ProduitController extends AbstractController
@@ -60,6 +60,9 @@ final class ProduitController extends AbstractController
         $produit = $produitRepository->find($id);
         //    dd($produit);
 
+        if ($produit->getSlug() == $slug) {
+            return $this->redirectToRoute('produit.show', ['slug' => $produit->getSlug(), 'id' => $produit->getId()]);
+        }
         return $this->render('produit/show.html.twig', [
             'produit' => $produit
         ]);
@@ -102,6 +105,22 @@ final class ProduitController extends AbstractController
         }
         return $this->render('produit/new.html.twig', [
             'produit' => $produit,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/produits/create', name: 'produit.create')]
+    public function create(Request $request, EntityManagerInterface $em)
+    {
+        $produit = new Produit();
+        $form = $this->createForm(ProduitType::class, $produit);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($produit);
+            $em->flush();
+            $this->addFlash('Succes', 'Le produit à bien été crée');
+            return $this->redirectToRoute('produit.index');
+        }
+        return $this->render('produit/create.html.twig', [
             'form' => $form
         ]);
     }

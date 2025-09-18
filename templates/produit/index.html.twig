@@ -3,16 +3,33 @@
 {% block  title "Tous les produits" %}
 
 {% block body %}
-    <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est officiis dolorem maiores amet dignissimos omnis! Distinctio vitae nesciunt culpa quasi ipsum, reiciendis sunt quo quae quos placeat esse laudantium repellendus.
-    </p>  
+	<p>
+		Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est officiis dolorem maiores amet dignissimos omnis! Distinctio vitae nesciunt culpa quasi ipsum, reiciendis sunt quo quae quos placeat esse laudantium repellendus.
+	</p>
 
-    <ul>
-    {% for produit in produits %}
-    <li>
-        <a href="{{ path('produit.show', {id: 8, slug: 'livre-jeune'} ) }}">{{ produit.nom() }}</a>
-    </li>
-    {% endfor %}
-    </ul>
+	<p>
+		<a class="btn btn-primary btn-sm" href="{{ path('produit.create') }}">Créer un produit</a>
+	</p>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Gérér</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for produit in produits %}
+				<tr>
+					<td>
+						<a href="{{ path('produit.show', {id: produit.id, slug: produit.slug} ) }}">{{ produit.nom }}</a>
+					</td>
+					<td>
+						<a class="btn btn-primary btn-sm" href="{{ path('produit.edit', {id: produit.id} ) }}">Modifier</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
 {% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title "Produit : " ~ produit.nom %}
+{% block title "Créer un produit" %}
 
 {% block body %}
 
-<h1>{{ produit.nom ~ ' :' ~ ' ' ~ produit.prix }} €</h1>
+<h1>Créer un nouveau Produit</h1>
 
-    {{ form(form) }}
+{{ form(form) }}
 
 {# <p>
 {{ produit.description | nl2br }}

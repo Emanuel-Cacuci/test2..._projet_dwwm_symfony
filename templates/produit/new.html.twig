@@ -6,8 +6,10 @@
 {% block body %}
 
 
-{{ form(form) }}
+{# {{ form(form) }} #}
 
+
+{{ include('produit/form.html.twig', {'button_label': 'Ajouter'}) }}
 
 
 
