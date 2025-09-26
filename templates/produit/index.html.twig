@@ -3,33 +3,45 @@
 {% block  title "Tous les produits" %}
 
 {% block body %}
-	<p>
-		Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est officiis dolorem maiores amet dignissimos omnis! Distinctio vitae nesciunt culpa quasi ipsum, reiciendis sunt quo quae quos placeat esse laudantium repellendus.
-	</p>
-
-	<p>
-		<a class="btn btn-primary btn-sm" href="{{ path('produit.create') }}">Créer un produit</a>
-	</p>
+	<p>GESTION DES PRODUITS</p>
 
 	<table class="table">
-		<thead>
-			<tr>
+		<thead class="th" v>
+			<tr class="th">
+				<th>Id</th>
+				<th>Couverture</th>
 				<th>Nom</th>
-				<th>Gérér</th>
+				<th>Catégorie</th>
+				<th>Stock</th>
+				<th>Auteur</th>
+				<td>Gérér</td>
 			</tr>
 		</thead>
 		<tbody>
 			{% for produit in produits %}
 				<tr>
+					<td>{{ produit.id }}</td>
+					<td>{{ produit.images }}</td>
+					<td>{{ produit.nom }}</td>
+					<td>{{ produit.categorie.nom }}</td>
+					<td>{{ produit.stock }}</td>
+					<td>{{ produit.auteur.prenom }}</td>
 					<td>
-						<a href="{{ path('produit.show', {id: produit.id, slug: produit.slug} ) }}">{{ produit.nom }}</a>
-					</td>
-					<td>
-						<a class="btn btn-primary btn-sm" href="{{ path('produit.edit', {id: produit.id} ) }}">Modifier</a>
+						<div class="d-flex gap-3">
+							<a class="btn btn-primary btn-sm" href="{{ path('produit.show', {id: produit.id, slug: produit.slug} ) }}">Details</a>
+							<a class="btn btn-primary btn-sm" href="{{ path('produit.edit', {id: produit.id} ) }}">Modifier</a>
+							<form action="{{ path('produit.delete', {id: produit.id} ) }}" method="post">
+								<input type="hidden" name="_method" value="DELETE">
+								<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+							</form>
+						</div>
+
 					</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-
+	<p>
+		<a class="btn btn-primary btn-sm" href="{{ path('produit.new') }}">Ajouter</a>
+	</p>
 {% endblock %}

@@ -5,13 +5,18 @@ namespace App\Form;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
 use App\Entity\Produit;
-use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+// use Symfony\Component\Form\Event\PostSubmitEvent;
+use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ProduitType extends AbstractType
 {
@@ -19,13 +24,19 @@ class ProduitType extends AbstractType
     {
         $builder
             ->add('nom', TypeTextType::class, [
-                'label' => 'Change le nom du champ'
+                // 'label' => 'Change le nom du champ'
             ])
             ->add('prix')
             ->add('images')
             ->add('stock')
             ->add('description')
-            ->add('slug')
+            ->add('slug', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Length(min: 10),
+                    new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide")
+                ]
+            ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'nom',
@@ -34,12 +45,37 @@ class ProduitType extends AbstractType
                 'class' => Auteur::class,
                 'choice_label' => 'prenom',
             ])
-        //     ->add('save', SubmitType::class, [
-        //         'label' => 'Modifier'
-        //     ])
-        //
+            //     ->add('save', SubmitType::class, [
+            //         'label' => 'Modifier'
+            //     ])
+            //
+            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...))
+            // ->addEventListener(FormEvents::POST_SUBMIT, $this->atachTimesstamps(...))
         ;
     }
+
+    public function autoSlug(PreSubmitEvent $event): void
+    {
+        $data = $event->getData();
+        if (empty($data['slug'])) {
+            $slugger = new AsciiSlugger();
+            $data['slug'] = strtolower($slugger->slug($data['nom']));
+            $event->setData($data);
+        }
+    }
+
+    // public function atachTimesstamps(PostSubmitEvent $event): void
+    // {
+    //     $data = $event->getData();
+    //     if (!($data instanceof Produit)) {
+    //         return;
+    //     }
+
+    //     $data->setUpdatedAt(new \DateTimeImmutable());
+    //     if (!$data-getId()) {
+    //         $data-setCreatedAt(new \DateTimeImmutable());
+    //     }
+    // }
 
     public function configureOptions(OptionsResolver $resolver): void
     {

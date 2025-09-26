@@ -60,7 +60,7 @@ final class ProduitController extends AbstractController
         $produit = $produitRepository->find($id);
         //    dd($produit);
 
-        if ($produit->getSlug() == $slug) {
+        if ($produit->getSlug() !== $slug) {
             return $this->redirectToRoute('produit.show', ['slug' => $produit->getSlug(), 'id' => $produit->getId()]);
         }
         return $this->render('produit/show.html.twig', [
@@ -74,7 +74,7 @@ final class ProduitController extends AbstractController
         // return new Response('Produit : ' . $slug);
     }
 
-    #[Route('/produits/{id}/edit', name: 'produit.edit')]
+    #[Route('/produits/{id}/edit', name: 'produit.edit', methods: ['GET', 'POST'])]
     public function edit(Produit $produit, Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(ProduitType::class, $produit);
@@ -91,37 +91,29 @@ final class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/new', name: 'produit.new')]
-    public function new(Request $request, EntityManagerInterface $em)
-    {
-        $produit = new Produit();
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            $em->persist($produit);
-            $em->flush();
-            $this->addFlash('Succes', 'Le produit à bien été modifiée');
-            return $this->redirectToRoute('produit.index');
-        }
-        return $this->render('produit/new.html.twig', [
-            'produit' => $produit,
-            'form' => $form
-        ]);
-    }
-
-    #[Route('/produits/create', name: 'produit.create')]
+    #[Route('/produits/new', name: 'produit.new')]
     public function create(Request $request, EntityManagerInterface $em)
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($produit);
             $em->flush();
             $this->addFlash('Succes', 'Le produit à bien été crée');
             return $this->redirectToRoute('produit.index');
         }
-        return $this->render('produit/create.html.twig', [
+        return $this->render('produit/new.html.twig', [
             'form' => $form
         ]);
+    }
+    
+    #[Route('/produits/{id}/edit', name: 'produit.delete', methods: ['DELETE'])]
+    public function delete(Produit $produit, EntityManagerInterface $em)
+    {
+        $em->remove($produit);
+        $em->flush();
+        $this->addFlash('Succes', 'Le produit à bien été supprimée');
+        return $this->redirectToRoute('produit.index');
     }
 }
