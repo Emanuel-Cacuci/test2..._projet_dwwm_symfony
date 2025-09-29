@@ -15,8 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Regex;
+// use Symfony\Component\Validator\Constraints\Length;
+// use Symfony\Component\Validator\Constraints\Regex;
+// use Symfony\Component\Validator\Constraints\Sequentially;
 
 class ProduitType extends AbstractType
 {
@@ -32,14 +33,17 @@ class ProduitType extends AbstractType
             ->add('description')
             ->add('slug', TextType::class, [
                 'required' => false,
-                'constraints' => [
-                    new Length(min: 10),
-                    new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide")
-                ]
+                // 'constraints' => new Sequentially([
+                //     new Length(min: 10),
+                //     new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide")
+
+                // ])
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'nom',
+                                                                // Ajoute empty-data quand c'est necessaire... !!!!
+                                                                 // Regarde la fin de la video de Grafikart (Validator) ...
             ])
             ->add('auteur', EntityType::class, [
                 'class' => Auteur::class,

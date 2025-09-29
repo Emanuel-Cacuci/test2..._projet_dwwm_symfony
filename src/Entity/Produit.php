@@ -7,8 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+// use Symfony\Component\Validator\Constraints\Positive;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[UniqueEntity(['nom'])]
+#[UniqueEntity('slug')]
 class Produit
 {
     #[ORM\Id]
@@ -17,6 +22,10 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+                                                                  // Ajoute NotBlank quand c'est necessaire... !!!!!
+                                                                 // Ajoute empty-data quand c'est necessaire dans ProduitType... !!!!
+                                                                 // Regarde la fin de la video de Grafikart (Validator) ...
+    #[Assert\Length(min: 5)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2)]
@@ -26,6 +35,7 @@ class Produit
     private ?string $images = null;
 
     #[ORM\Column]
+    #[Assert\Positive()]
     private ?int $stock = null;
 
     // #[ORM\Column(length: 100, unique:true)]
@@ -53,9 +63,12 @@ class Produit
     private ?Auteur $auteur = null;
 
     #[ORM\Column(length: 100, nullable: false)]
+    #[Assert\Length(min: 5)]
+    #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Slug invalide')]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 15)]
     private ?string $description = null;
 
     public function __construct()

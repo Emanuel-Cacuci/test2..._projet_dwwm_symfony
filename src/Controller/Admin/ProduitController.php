@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 // use App\Entity\Auteur;
 // use App\Entity\Categorie;
@@ -16,10 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 // use Symfony\Component\HttpKernel\Exception\NearMissValueResolverException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
+#[Route("/admin/produits", name: 'admin.produit.')]
 final class ProduitController extends AbstractController
 {
-    #[Route('/produit', name: 'produit.index')]
+    #[Route('/', name: 'index')]
     public function index(Request $request, ProduitRepository $produitRepository, EntityManagerInterface $em): Response
     {
 
@@ -54,7 +56,7 @@ final class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/{slug}-{id}', name: 'produit.show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
+    #[Route('/{slug}-{id}', name: 'show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
     public function show(Request $request, string $slug, int $id, ProduitRepository $produitRepository): Response
     {
         $produit = $produitRepository->find($id);
@@ -74,24 +76,7 @@ final class ProduitController extends AbstractController
         // return new Response('Produit : ' . $slug);
     }
 
-    #[Route('/produits/{id}/edit', name: 'produit.edit', methods: ['GET', 'POST'])]
-    public function edit(Produit $produit, Request $request, EntityManagerInterface $em)
-    {
-        $form = $this->createForm(ProduitType::class, $produit);
-        $form->handleRequest($request);
-      if ($form->isSubmitted() && $form->isValid()){
-         $em->flush();
-         $this->addFlash('Succes', 'Le produit à bien été modifiée');
-         return $this->redirectToRoute('produit.index');
-      }
-        return $this->render('produit/edit.html.twig', [ 
-             'produit' => $produit,
-             'form' => $form
-
-        ]);
-    }
-
-    #[Route('/produits/new', name: 'produit.new')]
+    #[Route('/new', name: 'new')]
     public function create(Request $request, EntityManagerInterface $em)
     {
         $produit = new Produit();
@@ -107,8 +92,25 @@ final class ProduitController extends AbstractController
             'form' => $form
         ]);
     }
-    
-    #[Route('/produits/{id}/edit', name: 'produit.delete', methods: ['DELETE'])]
+
+    #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirement: ['id' => Requirement::DIGITS])]
+    public function edit(Produit $produit, Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash('Succes', 'Le produit à bien été modifiée');
+            return $this->redirectToRoute('produit.index');
+        }
+        return $this->render('produit/edit.html.twig', [
+            'produit' => $produit,
+            'form' => $form
+
+        ]);
+    }
+
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirement: ['id' => Requirement::DIGITS])]
     public function delete(Produit $produit, EntityManagerInterface $em)
     {
         $em->remove($produit);
