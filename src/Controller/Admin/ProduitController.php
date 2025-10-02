@@ -21,8 +21,19 @@ use Symfony\Component\Routing\Requirement\Requirement;
 #[Route("/admin/produits", name: 'admin.produit.')]
 final class ProduitController extends AbstractController
 {
+
+    #[Route("/home", name: 'home')]
+    public function home(ProduitRepository $produitRepository): Response
+    {
+        $produits = $produitRepository->findAll();
+
+        return $this->render('admin/produit/home.html.twig', [
+            'produits' => $produits
+        ]);
+    }
+    
     #[Route('/', name: 'index')]
-    public function index(Request $request, ProduitRepository $produitRepository, EntityManagerInterface $em): Response
+    public function index(ProduitRepository $produitRepository, EntityManagerInterface $em): Response
     {
 
         $produits = $produitRepository->findByStock(25);
@@ -51,7 +62,7 @@ final class ProduitController extends AbstractController
         // $produits[0]->setNom('Livre histoire');
         // $em->flush();
         // return new Response('Produit');
-        return $this->render('produit/index.html.twig', [
+        return $this->render('admin/produit/index.html.twig', [
             'produits' => $produits
         ]);
     }
@@ -63,9 +74,9 @@ final class ProduitController extends AbstractController
         //    dd($produit);
 
         if ($produit->getSlug() !== $slug) {
-            return $this->redirectToRoute('produit.show', ['slug' => $produit->getSlug(), 'id' => $produit->getId()]);
+            return $this->redirectToRoute('admin.produit.show', ['slug' => $produit->getSlug(), 'id' => $produit->getId()]);
         }
-        return $this->render('produit/show.html.twig', [
+        return $this->render('admin/produit/show.html.twig', [
             'produit' => $produit
         ]);
 
@@ -77,7 +88,7 @@ final class ProduitController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function create(Request $request, EntityManagerInterface $em)
+    public function new(Request $request, EntityManagerInterface $em)
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
@@ -86,14 +97,14 @@ final class ProduitController extends AbstractController
             $em->persist($produit);
             $em->flush();
             $this->addFlash('Succes', 'Le produit à bien été crée');
-            return $this->redirectToRoute('produit.index');
+            return $this->redirectToRoute('admin.produit.index');
         }
-        return $this->render('produit/new.html.twig', [
+        return $this->render('admin/produit/new.html.twig', [
             'form' => $form
         ]);
     }
 
-    #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirement: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(Produit $produit, Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(ProduitType::class, $produit);
@@ -101,21 +112,21 @@ final class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('Succes', 'Le produit à bien été modifiée');
-            return $this->redirectToRoute('produit.index');
+            return $this->redirectToRoute('admin.produit.index');
         }
-        return $this->render('produit/edit.html.twig', [
+        return $this->render('admin/produit/edit.html.twig', [
             'produit' => $produit,
             'form' => $form
 
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirement: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
     public function delete(Produit $produit, EntityManagerInterface $em)
     {
         $em->remove($produit);
         $em->flush();
         $this->addFlash('Succes', 'Le produit à bien été supprimée');
-        return $this->redirectToRoute('produit.index');
+        return $this->redirectToRoute('admin.produit.index');
     }
 }

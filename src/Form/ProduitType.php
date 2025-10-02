@@ -5,16 +5,20 @@ namespace App\Form;
 use App\Entity\Auteur;
 use App\Entity\Categorie;
 use App\Entity\Produit;
-use Symfony\Component\Form\Extension\Core\type\TextType;
+// use Symfony\Component\Form\Extension\Core\type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 // use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Event\PreSubmitEvent;
-use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+// use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+// use Symfony\Component\Validator\Constraints\Negative;
+
 // use Symfony\Component\Validator\Constraints\Length;
 // use Symfony\Component\Validator\Constraints\Regex;
 // use Symfony\Component\Validator\Constraints\Sequentially;
@@ -24,15 +28,18 @@ class ProduitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TypeTextType::class, [
+            ->add('nom', TextType::class, [
                 // 'label' => 'Change le nom du champ'
+                 'empty_data' => ''
             ])
-            ->add('prix')
+            ->add('prix', TextType::class, [
+                'empty_data' => ''
+            ])
             ->add('images')
             ->add('stock')
             ->add('description')
             ->add('slug', TextType::class, [
-                'required' => false,
+                'required' => false
                 // 'constraints' => new Sequentially([
                 //     new Length(min: 10),
                 //     new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide")

@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+// use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 /**
  * @extends ServiceEntityRepository<Produit>

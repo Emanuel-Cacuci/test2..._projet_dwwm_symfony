@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '/admin/admin.html.twig' %}
 
 {% block  title "Tous les produits" %}
 
@@ -28,9 +28,9 @@
 					<td>{{ produit.auteur.prenom }}</td>
 					<td>
 						<div class="d-flex gap-3">
-							<a class="btn btn-primary btn-sm" href="{{ path('produit.show', {id: produit.id, slug: produit.slug} ) }}">Details</a>
-							<a class="btn btn-primary btn-sm" href="{{ path('produit.edit', {id: produit.id} ) }}">Modifier</a>
-							<form action="{{ path('produit.delete', {id: produit.id} ) }}" method="post">
+							<a class="btn btn-primary btn-sm" href="{{ path('admin.produit.show', {id: produit.id, slug: produit.slug} ) }}">Details</a>
+							<a class="btn btn-primary btn-sm" href="{{ path('admin.produit.edit', {id: produit.id} ) }}">Modifier</a>
+							<form action="{{ path('admin.produit.delete', {id: produit.id} ) }}" method="post">
 								<input type="hidden" name="_method" value="DELETE">
 								<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
 							</form>
@@ -42,6 +42,6 @@
 		</tbody>
 	</table>
 	<p>
-		<a class="btn btn-primary btn-sm" href="{{ path('produit.new') }}">Ajouter</a>
+		<a class="btn btn-primary btn-sm" href="{{ path('admin.produit.new') }}">Ajouter</a>
 	</p>
 {% endblock %}

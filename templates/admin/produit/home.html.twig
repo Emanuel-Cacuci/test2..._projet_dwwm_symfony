@@ -1,0 +1,60 @@
+{% extends "/admin/admin.html.twig" %}
+
+{% block body %}
+
+	<style>
+
+		.images {
+			width: 25rem;
+			height: 12rem;
+			display: flex;
+			justify-content: center;
+			/* gap: 20px; */
+			border: 1px solid black;
+			border-radius: 20px;
+			/* align-items: center; */
+
+
+		}
+
+		.gestion {
+			width: 12rem;
+			height: 14rem;
+			border: 1px solid black;
+			border-radius: 20px;
+		}
+	</style>
+
+	<div class="gestion">
+    <a href="/admin/produits">Ajouter des livres</a>
+    
+    </div>
+
+	{% for produit in produits %}
+
+
+		<div class="images">
+			<p>{{ produit.images }}</p>
+		</div>
+
+		{# <div>{{ produit.id }}</div> #}
+		<p>{{ produit.nom }}</p>
+		{# <p>{{ produit.categorie.nom }}</p> #}
+	{# <p>{{ produit.stock }}</p>
+				<p>{{ produit.auteur.prenom }}</p> #}
+
+		{# <td>
+																							<div class="d-flex gap-3">
+																								<a class="btn btn-primary btn-sm" href="{{ path('admin.produit.show', {id: produit.id, slug: produit.slug} ) }}">Details</a>
+																								<a class="btn btn-primary btn-sm" href="{{ path('admin.produit.edit', {id: produit.id} ) }}">Modifier</a>
+																								<form action="{{ path('admin.produit.delete', {id: produit.id} ) }}" method="post">
+																									<input type="hidden" name="_method" value="DELETE">
+																									<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+																								</form>
+																							</div>
+																	
+																						</td> #}
+
+	{% endfor %}
+
+{% endblock %}

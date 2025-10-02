@@ -9,6 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 // use Symfony\Component\Validator\Constraints\Positive;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -22,14 +24,22 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[NotBlank()]
                                                                   // Ajoute NotBlank quand c'est necessaire... !!!!!
                                                                  // Ajoute empty-data quand c'est necessaire dans ProduitType... !!!!
                                                                  // Regarde la fin de la video de Grafikart (Validator) ...
     #[Assert\Length(min: 5)]
-    private ?string $nom = null;
+    private string $nom = '';
+
+
+    //  #[ORM\Column(length: 100, nullable: false)]
+    // #[Assert\Length(min: 5)]
+    // #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Slug invalide')]
 
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2)]
-    private ?string $prix = null;
+    #[Assert\Regex('/^[0-9]{1,2}\.[0-9]{2}$/')] 
+    #[NotBlank()]
+    private string $prix = '';
 
     #[ORM\Column(length: 255)]
     private ?string $images = null;

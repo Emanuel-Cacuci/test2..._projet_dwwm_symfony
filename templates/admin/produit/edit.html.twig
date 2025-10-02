@@ -1,16 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends '/admin/admin.html.twig' %}
 
 {% block title "Produit : " ~ produit.nom %}
 
 {% block body %}
 
-	<h1>{{ produit.nom ~ ' :' ~ ' ' ~ produit.prix }}
-		€</h1>
+	{# <h1>{{ produit.nom ~ ' :' ~ ' ' ~ produit.prix }}€</h1> #}
+	<h1>Modifier le produit</h1>
+		
 
 	{# {{ form(form) }} #}
 
-	{{ include('produit/form.html.twig', {'button_label': 'Modifier'}) }} <br>
-	<a class="btn btn-primary button" href="{{path('produit.index')}}">Retour</a>
+	{{ include('admin/produit/form.html.twig', {'button_label': 'Modifier'}) }} <br>
+	<a class="btn btn-primary button" href="{{path('admin.produit.index')}}">Retour</a>
 {# <p>
 {{ produit.description | nl2br }}
 </p> #}

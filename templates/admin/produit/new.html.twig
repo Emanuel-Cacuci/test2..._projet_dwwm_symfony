@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '/admin/admin.html.twig' %}
 
 {% block title "Créer un produit" %}
 
@@ -8,7 +8,7 @@
 
 {# {{ form(form) }} #}
 
-{{ include('produit/form.html.twig', {'button_label': 'Ajouter'}) }}
+{{ include('admin/produit/form.html.twig', {'button_label': 'Ajouter'}) }}
 
 {# <p>
 {{ produit.description | nl2br }}
