@@ -1,0 +1,11 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title 'Catégorie : ' ~ categorie.nom %}
+
+{% block body %}
+
+<h1>Editer la catégorie : {{ categorie.nom }}</h1>
+
+{{ include('admin/produit/form.html.twig', {'button_label': 'Modifier'}) }}
+
+{% endblock %}

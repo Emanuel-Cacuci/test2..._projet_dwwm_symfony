@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 // use Symfony\Component\Validator\Constraints\Positive;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
-#[UniqueEntity(['nom'])]
+#[UniqueEntity('nom')]
 #[UniqueEntity('slug')]
 class Produit
 {
@@ -40,6 +40,7 @@ class Produit
     #[Assert\Regex('/^[0-9]{1,2}\.[0-9]{2}$/')] 
     #[NotBlank()]
     private string $prix = '';
+    // private string ?$prix = null;
 
     #[ORM\Column(length: 255)]
     private ?string $images = null;
