@@ -1,0 +1,44 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title 'Tous les auteurs' %}
+
+{% block body %}
+
+{# double espace sur le clavier = . #}
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for auteur in auteurs %}
+        <tr>
+            <td>{{ auteur.id }}</td>
+            <td>{{ auteur.nom }}</td>
+            <td>{{ auteur.prenom }}</td> 
+            <td>
+                <div class="d-flex gap-1 ">
+                <a class="btn btn-primary btn-sm" src="{{ path('admin.auteur.show', {id: auteur.id, slug: auteur.slug}) }}">Details</a>
+                <a class="btn btn-primary btn-sm" src="{{ path('admin.auteur.edit', {id: auteur.id}) }}">Modifier</a>
+                <form action="{{ path('admin.auteur.delete', {id: auteur.id}) }}" method="POST">
+                <input type="hidden" name="_method" value="DELETE"></input>
+                <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+                </form>
+                </div>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+    <p>
+        <a class="btn btn-primary btn-sm" src="{{ path('admin') }}">Ajouter</a>
+    </p>
+
+{% endblock %}

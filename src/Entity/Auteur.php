@@ -27,6 +27,9 @@ class Auteur
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'auteur')]
     private Collection $produits;
 
+    #[ORM\Column(length: 100)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -87,6 +90,18 @@ class Auteur
                 $produit->setAuteur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

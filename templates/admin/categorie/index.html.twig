@@ -1,12 +1,8 @@
 {% extends 'admin/admin.html.twig' %}
 
-{% block title 'Catégories' %}
+{% block title 'Toutes les catégories' %}
 
 {% block body  %}
-
-	<p>
-		<a class="btn btn-primary" href="{{ path('admin.categorie.new') }}">Ajouter</a>
-	</p>
 
 	<table class="table">
 		<thead>
@@ -36,5 +32,8 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<p>
+		<a class="btn btn-primary" href="{{ path('admin.categorie.new') }}">Ajouter</a>
+	</p>
 
 {% endblock %}
