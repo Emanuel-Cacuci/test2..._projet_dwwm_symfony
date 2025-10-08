@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 #[UniqueEntity('nom')]
@@ -20,8 +21,9 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    // #[NotBlank()]
     #[Assert\Length(min: 5)]
-    private string $nom = '';
+    private ?string $nom = null;
 
     /**
      * @var Collection<int, Produit>

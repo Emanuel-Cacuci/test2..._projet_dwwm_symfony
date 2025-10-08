@@ -6,8 +6,14 @@ use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+// use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AuteurRepository::class)]
+// #[UniqueEntity('nom')]
+// #[UniqueEntity('slug')]
 class Auteur
 {
     #[ORM\Id]
@@ -16,9 +22,14 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nom = null;
+    private ?string $nom = null;  
+
+    //   #[ORM\Column(length: 50)]
+    // #[Assert\Length(min: 5)]
+    // private string $nom = '';
 
     #[ORM\Column(length: 100)]
+    // #[Assert\Length(min: 3)]
     private ?string $prenom = null;
 
     /**

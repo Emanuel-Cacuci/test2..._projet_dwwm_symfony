@@ -6,7 +6,7 @@
 
 {# double espace sur le clavier = . #}
 
-<table>
+<table class="table">
 
     <thead>
         <tr>
@@ -23,8 +23,8 @@
             <td>{{ auteur.prenom }}</td> 
             <td>
                 <div class="d-flex gap-1 ">
-                <a class="btn btn-primary btn-sm" src="{{ path('admin.auteur.show', {id: auteur.id, slug: auteur.slug}) }}">Details</a>
-                <a class="btn btn-primary btn-sm" src="{{ path('admin.auteur.edit', {id: auteur.id}) }}">Modifier</a>
+                <a class="btn btn-primary btn-sm" href="{{ path('admin.auteur.show', {id: auteur.id, slug: auteur.slug}) }}">Details</a>
+                <a class="btn btn-primary btn-sm" href="{{ path('admin.auteur.edit', {id: auteur.id}) }}">Modifier</a>
                 <form action="{{ path('admin.auteur.delete', {id: auteur.id}) }}" method="POST">
                 <input type="hidden" name="_method" value="DELETE"></input>
                 <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
@@ -38,7 +38,7 @@
 </table>
 
     <p>
-        <a class="btn btn-primary btn-sm" src="{{ path('admin') }}">Ajouter</a>
+        <a class="btn btn-primary btn-sm" href="{{ path('admin.auteur.new') }}">Ajouter</a>
     </p>
 
 {% endblock %}
